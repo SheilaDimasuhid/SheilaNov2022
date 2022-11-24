@@ -77,6 +77,11 @@ namespace SheilaNov2022.Pages
             // Update the newly added record
             //Last page should be shown per previous code
 
+            // go to the last page
+            IWebElement goToLastPageButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
+            goToLastPageButton.Click();
+
+            Thread.Sleep(2000);
 
             IWebElement editButtontask = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[1]"));
             editButtontask.Click();
@@ -139,6 +144,10 @@ namespace SheilaNov2022.Pages
         {
             // Complete automation for the delete time and material
             // Delete the newly added and updated record
+
+            // go to the last page
+            IWebElement goToLastPageButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
+            goToLastPageButton.Click();
 
             //This step produce an alert on screen
             IWebElement deleteButtontask = driver.FindElement(By.XPath("//*[@id=\'tmsGrid\']/div[3]/table/tbody/tr[last()]/td[5]/a[2]"));
