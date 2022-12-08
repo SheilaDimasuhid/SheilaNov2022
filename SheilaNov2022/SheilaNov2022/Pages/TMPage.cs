@@ -1,6 +1,9 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using SheilaNov2022.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +21,9 @@ namespace SheilaNov2022.Pages
             IWebElement createNewButton = driver.FindElement(By.XPath("//*[@id='container']/p/a"));
             createNewButton.Click();
             Thread.Sleep(500);
+
+            Wait.WaitForElementToExist(driver, "XPath", "//*[@id=\"TimeMaterialEditForm\"]/div/div[1]/div/span[1]/span/span[2]/span", 6);
+
 
             // select Time in the typecode dropdown
             IWebElement typeCodeDropdown = driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[1]/div/span[1]/span/span[2]/span"));
@@ -47,7 +53,14 @@ namespace SheilaNov2022.Pages
             // click on save button
             IWebElement saveButton = driver.FindElement(By.Id("SaveButton"));
             saveButton.Click();
-            Thread.Sleep(1000);
+            //Thread.Sleep(1000);
+
+            Wait.WaitForElementToBeClickable(driver, "XPath", "//*[@id=\"tmsGrid\"]/div[4]/a[4]/span", 5);
+
+            //wait for the last page button to be clickable
+            //var wait = new WebDriverWait(driver, new TimeSpan(0, 0, 5));
+            //wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span")));
+
 
             // check if new time record has been created successfully
             IWebElement goToLastPageButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
@@ -119,12 +132,17 @@ namespace SheilaNov2022.Pages
             // click on save button
             IWebElement saveButton2 = driver.FindElement(By.Id("SaveButton"));
             saveButton2.Click();
-            Thread.Sleep(2000);
+            //Thread.Sleep(2000);
+            
+            //Sample of Wait
+            var wait = new WebDriverWait(driver, new TimeSpan(0, 0, 5));
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span")));
+
 
             // check if new time record has been created successfully
             IWebElement goToLastPageButton2 = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
             goToLastPageButton2.Click();
-            Thread.Sleep(500);
+            Thread.Sleep(2000);
 
             IWebElement newCode2 = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]"));
             Thread.Sleep(500);
@@ -153,10 +171,6 @@ namespace SheilaNov2022.Pages
             IWebElement deleteButtontask = driver.FindElement(By.XPath("//*[@id=\'tmsGrid\']/div[3]/table/tbody/tr[last()]/td[5]/a[2]"));
             deleteButtontask.Click();
 
-
-            // 'IJavaScriptExecutor' is an interface which is used to run the 'JavaScript code' into the webdriver (Browser)
-            //((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].click()", deleteButtontask);
-
             Thread.Sleep(500);
             // Switch the control of 'driver' to the Alert from main window
             IAlert confirmationAlert = driver.SwitchTo().Alert();
@@ -172,22 +186,19 @@ namespace SheilaNov2022.Pages
 
             IWebElement goToLastPageButton3 = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
             goToLastPageButton3.Click();
-            Thread.Sleep(500);
+            Thread.Sleep(1000);
 
             IWebElement newCode3 = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]"));
             Thread.Sleep(500);
 
-            if (newCode3.Text == "SheilaUpdatedCode2")
-                {
-                    Console.WriteLine("Time record hasn't been deleted successfully");
-                }
-                else
-                {
-                    Console.WriteLine("Time record deleted successfully.");
-                }
-
-            
+            if (newCode3.Text != "SheilaUpdatedCode2")
+            {
+                Console.WriteLine("Time record deleted successfully.");
+            }
+            else
+            {
+                Console.WriteLine("Time record hasn't been deleted successfully");
+            }
         }
-
     }
 }
