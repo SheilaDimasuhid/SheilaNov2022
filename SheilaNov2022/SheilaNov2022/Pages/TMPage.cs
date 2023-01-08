@@ -1,12 +1,8 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SheilaNov2022.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace SheilaNov2022.Pages
 {
@@ -69,17 +65,27 @@ namespace SheilaNov2022.Pages
             Thread.Sleep(2000);
 
             IWebElement newCode = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]"));
+            IWebElement newDescription = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[3]"));
+            IWebElement newPrice = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[4]"));
 
             Thread.Sleep(2000);
 
+            //Example 1:
+            Assert.That(newCode.Text == "SheilaTestCode", "Actual code and accepted code do not match");
+            Assert.That(newDescription.Text == "SheilaTestDescription", "Actual Description and accepted description do not match");
+            Assert.That(newPrice.Text == "$10.00", "Actual price and accepted price do not match");
+            
+
+            /*Example 2:
             if (newCode.Text == "SheilaTestCode")
             {
-                Console.WriteLine("Time record created successfully.");
+                Assert.Pass("Time record created successfully.");
             }
             else
             {
-                Console.WriteLine("Time record hasn't been created successfully");
+                Assert.Fail("Time record hasn't been created successfully");
             }
+            */
         }
 
         public void EditTM(IWebDriver driver)
@@ -164,14 +170,17 @@ namespace SheilaNov2022.Pages
             // Delete the newly added and updated record
 
             // go to the last page
+
+            Thread.Sleep(1000);
             IWebElement goToLastPageButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
             goToLastPageButton.Click();
 
             //This step produce an alert on screen
+            Thread.Sleep(1000);
             IWebElement deleteButtontask = driver.FindElement(By.XPath("//*[@id=\'tmsGrid\']/div[3]/table/tbody/tr[last()]/td[5]/a[2]"));
             deleteButtontask.Click();
 
-            Thread.Sleep(500);
+            Thread.Sleep(100);
             // Switch the control of 'driver' to the Alert from main window
             IAlert confirmationAlert = driver.SwitchTo().Alert();
 

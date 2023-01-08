@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NUnit.Framework;
 
 namespace SheilaNov2022.Pages
 {
@@ -12,7 +13,7 @@ namespace SheilaNov2022.Pages
     {
         public void LoginActions(IWebDriver driver)
         {
-            
+
             //maximize the browser
             driver.Manage().Window.Maximize();
 
@@ -20,9 +21,16 @@ namespace SheilaNov2022.Pages
             driver.Navigate().GoToUrl("http://horse.industryconnect.io/Account/Login?ReturnUrl=%2f");
             Thread.Sleep(1000);
 
-            // identify username textbox and enter valid username
-            IWebElement usernameTextbox = driver.FindElement(By.Id("UserName"));
-            usernameTextbox.SendKeys("hari");
+            try
+            {
+                // identify username textbox and enter valid username
+                IWebElement usernameTextbox = driver.FindElement(By.Id("UserName"));
+                usernameTextbox.SendKeys("hari");
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail("TurnUp Portal page did not launch", ex.Message);
+            }
 
             // identify password textbox and enter valid password
             IWebElement passwordTextbox = driver.FindElement(By.Id("Password"));
