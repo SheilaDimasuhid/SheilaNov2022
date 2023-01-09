@@ -1,7 +1,4 @@
-﻿using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using SheilaNov2022.Utilities;
+﻿
 
 
 namespace SheilaNov2022.Pages
@@ -49,7 +46,7 @@ namespace SheilaNov2022.Pages
             // click on save button
             IWebElement saveButton = driver.FindElement(By.Id("SaveButton"));
             saveButton.Click();
-            Thread.Sleep(5000);
+            Thread.Sleep(7000);
 
            // Wait.WaitForElementToBeClickable(driver, "XPath", "//*[@id=\"tmsGrid\"]/div[4]/a[4]/span", 20);
 
@@ -63,7 +60,7 @@ namespace SheilaNov2022.Pages
                                                                            //*[@id="tmsGrid"]/div[4]/a[4]/span
             goToLastPageButton.Click();
 
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
             
                                                                 //*[@id="tmsGrid"]/div[3]/table/tbody/tr[last()]/td[1]
             IWebElement newCode = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]")); 
@@ -102,11 +99,20 @@ namespace SheilaNov2022.Pages
             IWebElement goToLastPageButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
             goToLastPageButton.Click();
 
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
 
-            IWebElement editButtontask = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[1]"));
-            editButtontask.Click();
-            Thread.Sleep(500);
+            IWebElement findNewRecordCreated = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
+            if (findNewRecordCreated.Text == "SheilaTestCode")
+            {
+                IWebElement editButtontask = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[1]"));
+                editButtontask.Click();
+                Thread.Sleep(500);
+            }
+            else
+            {
+                Assert.Fail("Record to be edited hasn't been found. Record not edited");
+            }
+            
 
             // select Time in the typecode dropdown
             IWebElement typeCodeDropdown2 = driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[1]/div/span[1]/span/span[2]/span"));
@@ -140,21 +146,31 @@ namespace SheilaNov2022.Pages
             // click on save button
             IWebElement saveButton2 = driver.FindElement(By.Id("SaveButton"));
             saveButton2.Click();
-            //Thread.Sleep(2000);
+            Thread.Sleep(5000);
             
             //Sample of Wait
             var wait = new WebDriverWait(driver, new TimeSpan(0, 0, 5));
-            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span")));
+            //wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span")));
 
 
             // check if new time record has been created successfully
             IWebElement goToLastPageButton2 = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
             goToLastPageButton2.Click();
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
 
             IWebElement newCode2 = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]"));
-            Thread.Sleep(500);
+            Thread.Sleep(5000);
 
+            IWebElement newCode = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]"));
+            //IWebElement newDescription = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[3]"));
+            //IWebElement newPrice = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[4]"));
+
+            Thread.Sleep(5000);
+
+            //Example 1:
+            Assert.That(newCode2.Text == "SheilaUpdatedCode2", "Actual code and accepted code do not match");
+
+            /*
             if (newCode2.Text == "SheilaUpdatedCode2")
             {
                 Console.WriteLine("Time record updated successfully.");
@@ -163,6 +179,7 @@ namespace SheilaNov2022.Pages
             {
                 Console.WriteLine("Time record hasn't been updated successfully");
             }
+            */
 
         }
 
@@ -173,16 +190,26 @@ namespace SheilaNov2022.Pages
 
             // go to the last page
 
-            Thread.Sleep(1000);
+            Thread.Sleep(5000);
             IWebElement goToLastPageButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
             goToLastPageButton.Click();
 
-            //This step produce an alert on screen
             Thread.Sleep(1000);
-            IWebElement deleteButtontask = driver.FindElement(By.XPath("//*[@id=\'tmsGrid\']/div[3]/table/tbody/tr[last()]/td[5]/a[2]"));
-            deleteButtontask.Click();
 
-            Thread.Sleep(100);
+            IWebElement findRecordToDelete = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
+            if (findRecordToDelete.Text == "SheilaUpdatedCode2")
+            {
+                IWebElement deleteButtontask = driver.FindElement(By.XPath("//*[@id=\'tmsGrid\']/div[3]/table/tbody/tr[last()]/td[5]/a[2]"));
+                deleteButtontask.Click();
+                Thread.Sleep(2000);
+            }
+            else
+            {
+                Assert.Fail("Record to be deleted hasn't been found. Record not deleted");
+            }
+
+            //This step produce an alert on screen
+                   
             // Switch the control of 'driver' to the Alert from main window
             IAlert confirmationAlert = driver.SwitchTo().Alert();
 
@@ -193,7 +220,7 @@ namespace SheilaNov2022.Pages
 
             //'.Dismiss()' is used to cancel the alert '(click on the Cancel button)'
             confirmationAlert.Accept();
-            Thread.Sleep(500);
+            Thread.Sleep(5000);
 
             IWebElement goToLastPageButton3 = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
             goToLastPageButton3.Click();
@@ -202,14 +229,20 @@ namespace SheilaNov2022.Pages
             IWebElement newCode3 = driver.FindElement(By.XPath("//*[@id='tmsGrid']/div[3]/table/tbody/tr[last()]/td[1]"));
             Thread.Sleep(500);
 
+
+            Assert.That(newCode3.Text != "SheilaUpdatedCode2", "Time record hasn't been deleted successfully");
+           
+            /*
             if (newCode3.Text != "SheilaUpdatedCode2")
             {
-                Console.WriteLine("Time record deleted successfully.");
+                Assert.Pass("Time record deleted successfully.");
             }
             else
             {
-                Console.WriteLine("Time record hasn't been deleted successfully");
+                Assert.Fail("Time record hasn't been deleted successfully");
             }
+            */
+            
         }
     }
 }

@@ -1,9 +1,5 @@
-﻿using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+
 
 namespace SheilaNov2022.Utilities
 {
@@ -11,5 +7,22 @@ namespace SheilaNov2022.Utilities
     {
 
         public static IWebDriver driver;
+
+        [OneTimeSetUp]
+        public void LoginSTeps()
+        {
+            // open chrome browser
+            driver = new ChromeDriver();
+
+            //LoginPage object initialization and definition
+            LoginPage loginPageObj = new LoginPage();
+            loginPageObj.LoginActions(driver);
+        }
+
+        [OneTimeTearDown]
+        public void CloseTestRun()
+        {
+            driver.Quit();
+        }
     }
 }
